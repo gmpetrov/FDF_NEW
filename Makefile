@@ -6,7 +6,7 @@
 #    By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/02/20 09:56:28 by gmp               #+#    #+#              #
-#    Updated: 2015/02/20 10:53:15 by gmp              ###   ########.fr        #
+#    Updated: 2015/02/20 14:54:13 by gmp              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJS	= $(SRCS:srcs/%.c=.obj/%.o)
 INC		= -I includes -I libft/includes
 FLAGS	= -Wall -Wextra -Werror
 LIB		= -L libft -lft -L /usr/X11/lib -lmlx -lXext -lX11
-CC		= gcc
+CC		= gcc -g
 OBJ_DIR = srcs/.obj
 
 all: $(NAME)
