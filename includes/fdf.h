@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 18:12:28 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/20 20:21:39 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "libft.h"
 # include <mlx.h>
 # include <math.h>
+# include <fcntl.h>
 
 /* STRUCTURES */
 
@@ -31,6 +32,7 @@ typedef struct 		s_env
 	int 	bpp;
 	int 	size_line;
 	int 	endian;
+	int 	**map;
 	void (*tab[42])();
 }					t_env;
 
@@ -45,6 +47,13 @@ void 	img_pixel_put(t_env *e, int x, int y, int color);
 void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color);
 
 void	drawGradient(t_env *e);
+
+/* PARSING */
+
+int		**ft_get_data(int argc, char **argv);
+int		ft_tablen(char **tab);
+int		ft_data_size(char *file);
+int		*ft_put_data(char *str);
 
 /* KEY FUNCTION */
 

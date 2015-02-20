@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 18:13:23 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/20 18:45:30 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,26 @@ void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color)
 	}
 }
 
+void 	draw_circle(t_env *e, int origin_x, int origin_y, int ray)
+{
+	int x;
+	int y;
+	int alpha;
+
+	alpha = 0;
+	while (alpha < 180){
+		x = origin_x + (ray * cos(alpha));
+		y = origin_y + (ray * sin(alpha));
+		img_pixel_put(e, x, y, 0xff0000);
+		alpha++;
+	}
+
+}
+
 int 	expose_hook(t_env *e)
 {
-	// drawGradient(e);
-	draw_line_mlx(e, 0, 0, 400, 400, 0xff0000);
+	drawGradient(e);
+	// draw_circle(e, 200, 200, 100);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	return (0);
 }
