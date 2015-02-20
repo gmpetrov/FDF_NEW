@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 15:43:10 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/20 18:12:28 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@
 
 # include "libft.h"
 # include <mlx.h>
-
-
-# include <stdio.h>
+# include <math.h>
 
 /* STRUCTURES */
 
@@ -44,6 +42,7 @@ void	initPtrTab(t_env *e);
 t_env	*getEnv();
 int 	keyMap(int keycode);
 void 	img_pixel_put(t_env *e, int x, int y, int color);
+void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color);
 
 void	drawGradient(t_env *e);
 
