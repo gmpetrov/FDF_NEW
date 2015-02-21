@@ -6,11 +6,13 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/21 13:40:13 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/21 16:07:52 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+#include <stdio.h>
 
 int 	key_hook(int keycode, t_env *e)
 {
@@ -92,7 +94,13 @@ void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color)
 		x = x1;
 		while (x <= x2)
 		{
+			if(x2-x1 == 0)
+			{
+				printf("division by zero\n");
+				return;
+			}
 			y = y1 + ((y2 - y1) * (x - x1)) / (x2 - x1);
+			
 			img_pixel_put(e, x, y, color);
 			x++;
 		}
@@ -104,6 +112,11 @@ void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color)
 		y = y1;
 		while (y <= y2)
 		{
+			if(y2-y1 == 0)
+			{
+				printf("division by zero\n");
+				return;
+			}
 			x = x1 + ((x2 - x1) * (y - y1)) / (y2 - y1);
 			img_pixel_put(e, x, y, color);
 			y++;
@@ -134,20 +147,33 @@ void 	drawGrid(t_env *e)
 	int 	scale_x;
 	int 	width;
 	int 	heigth;
+	double 	x_i_1;
+	double 	y_i_1;
+	double 	x_i_2;
+	double 	y_i_2;
+	double 	cte;
 
 	x = 0;
 	y = 0;
-
+	cte = 2;
 	scale_x = e->scale;
 	scale_y = e->scale;
 	heigth = e->map_heigth;
-	width = e->map[y][0];
+	// width = e->map[y][0];
 
 	while (y < heigth - 1){
-		width = e->map[y][0];		
+		width = e->map[y][0];
 		while (x < width - 1){
-			draw_line_mlx(e, x * scale_x, y * scale_y, (x + 1) * scale_x, y * scale_y, 0xFF0000);
-			draw_line_mlx(e, x * scale_x, y * scale_y, x * scale_x, (y + 1) * scale_y, 0xFF0000);
+			x_i_1 = x + (cte * e->map[y][x + 1]);
+			y_i_1 = y + ((cte/2) * (e->map[y][x + 1]));
+			x_i_2 = (x + 1) + (cte * e->map[y][x + 2]);
+			y_i_2 = (y) + ((cte/2) * (e->map[y][x + 2]));
+
+			draw_line_mlx(e, x_i_1 * scale_x, y_i_1 * scale_y, x_i_2 * scale_x, y_i_2 * scale_y, 0xFF0000);
+
+			x_i_2 = (x) + (cte * e->map[y + 1][x + 1]);
+			y_i_2 = (y + 1) + ((cte/2) * (e->map[y + 1][x + 1]));
+			draw_line_mlx(e, x_i_1* scale_x, y_i_1 * scale_y, x_i_2 * scale_x, y_i_2 * scale_y, 0xFF0000);
 			x++;
 		}
 		x = 0;
