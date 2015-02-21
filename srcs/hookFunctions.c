@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 18:45:30 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/21 13:40:13 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	img_pixel_put(t_env *e, int x, int y, int color)
 	unsigned int	new_color;
 	int	i;
 
+	if (x >= WIDTH || y >= HEIGTH || x < 0 || y < 0)
+		return ;
 	new_color = mlx_get_color_value(e->mlx, color);
 	i = x * 4 + y * e->size_line;
 	e->data[i] = (new_color & 0xFF);
@@ -122,13 +124,53 @@ void 	draw_circle(t_env *e, int origin_x, int origin_y, int ray)
 		img_pixel_put(e, x, y, 0xff0000);
 		alpha++;
 	}
+}
 
+void 	drawGrid(t_env *e)
+{	
+	int 	y;
+	int 	x;
+	int 	scale_y;
+	int 	scale_x;
+	int 	width;
+	int 	heigth;
+
+	x = 0;
+	y = 0;
+
+	scale_x = e->scale;
+	scale_y = e->scale;
+	heigth = e->map_heigth;
+	width = e->map[y][0];
+
+	while (y < heigth - 1){
+		width = e->map[y][0];		
+		while (x < width - 1){
+			draw_line_mlx(e, x * scale_x, y * scale_y, (x + 1) * scale_x, y * scale_y, 0xFF0000);
+			draw_line_mlx(e, x * scale_x, y * scale_y, x * scale_x, (y + 1) * scale_y, 0xFF0000);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
+	// while (y < heigth)
+	// {
+	// 	draw_line_mlx(e, 0, y * scale_y, width * scale_x, y * scale_y, 0xFF0000);
+	// 	y++;	
+	// }
+	// x = 0;
+	// y = 0;
+	// while (x < width)
+	// {
+	// 	draw_line_mlx(e, x * scale_x, 0, x * scale_x, heigth * scale_y, 0xFF0000);
+	// 	x++;	
+	// }
 }
 
 int 	expose_hook(t_env *e)
 {
-	drawGradient(e);
-	// draw_circle(e, 200, 200, 100);
+	// drawGradient(e);
+	drawGrid(e);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	return (0);
 }

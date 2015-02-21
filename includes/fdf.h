@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 20:21:39 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/21 13:36:08 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ typedef struct 		s_env
 	int 	size_line;
 	int 	endian;
 	int 	**map;
+	int 	scale;
+	int 	map_heigth;
+	int 	origin;
 	void (*tab[42])();
 }					t_env;
 

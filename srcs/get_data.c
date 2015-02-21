@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 20:15:16 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/20 20:26:45 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/21 12:25:58 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		**ft_get_data(int argc, char **argv)
 	}
 	i = ft_data_size(argv[1]);
 	tab = (int**)malloc((i + 1)* (sizeof(*tab)));
-	tab[i + 1] = 0;
+	tab[i + 1] = NULL;
 	i = 0;
 	fd = open(argv[1], O_RDONLY);
 	while (get_next_line(fd, &line) > 0)
@@ -43,7 +43,7 @@ int		**ft_get_data(int argc, char **argv)
 
 int		ft_tablen(char **tab)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (tab[i] != '\0')
@@ -56,7 +56,9 @@ int		ft_data_size(char *file)
 	int		fd;
 	int		i;
 	char	*line;
+	t_env 	*e;
 
+	e = getEnv();
 	i = 0;
 	fd = open(file, O_RDONLY);
 	while (get_next_line(fd, &line) != 0)
@@ -65,6 +67,7 @@ int		ft_data_size(char *file)
 		i++;
 	}
 	close(fd);
+	e->map_heigth = i;
 	return (i);
 }
 
@@ -77,7 +80,7 @@ int		*ft_put_data(char *str)
 
 	chartab = ft_strsplit(str, ' ');
 	i = ft_tablen(chartab);
-	tab = (int*)malloc(i * (sizeof(*tab)));
+	tab = (int*)malloc((i + 1) * (sizeof(*tab)));
 	tab[0] = i;
 	j = 0;
 	while (++j <= i)
