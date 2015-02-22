@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/21 19:25:25 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/22 16:57:02 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,33 +160,33 @@ void 	drawIsometric(t_env *e)
 	scale_x = e->scale;
 	scale_y = e->scale;
 	heigth = e->map_heigth;
-	// width = e->map[y][0];
 	while (y < heigth - 1){
 		width = e->map[y][0];
-		while (x < width){
-			x_i_1 = x * cte - cte * y;
-			y_i_1 = e->map[y][x + 1] + (((cte / 2) * x) + ((cte/2) * y));
+		while (x < width - 1)
+		{
+			x_i_1 = x * cte - (cte * y);
+			y_i_1 = -(e->map[y][x + 1]) + (((cte / 2) * x) + ((cte/2) * y));
 			x_i_2 = (x + 1) * cte - cte * y;
-			y_i_2 = e->map[y][x + 2] + (((cte / 2) * x + 1) + ((cte/2) * y));
-			draw_line_mlx(e, x_i_1 * scale_x + e->origin_x, y_i_1 * scale_y + e->origin_y, x_i_2 * scale_x + e->origin_x, y_i_2 * scale_y + e->origin_y, 0xff0000);
+			y_i_2 = -(e->map[y][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * y));
+			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, 0xff0000);
 
-			x_i_1 = x * cte - cte * y;
-			y_i_1 = e->map[y][x + 1] + (((cte / 2) * x) + ((cte/2) * y));
-			x_i_2 = (x) * cte - cte * (y + 1);
-			y_i_2 = e->map[y + 1][x + 1] + (((cte / 2) * x) + ((cte/2) * (y + 1)));
-			draw_line_mlx(e, x_i_1* scale_x + e->origin_x, y_i_1 * scale_y + e->origin_y, x_i_2 * scale_x + e->origin_x, y_i_2 * scale_y + e->origin_y, 0xff0000);
+			x_i_1 = ((x) * cte) - (cte * (y + 1));
+			y_i_1 = -(e->map[y + 1][x + 1]) + (((cte / 2) * x) + ((cte/2) * (y + 1)));
+			x_i_2 = (x * cte) - (cte * y);
+			y_i_2 = -(e->map[y][x + 1]) + (((cte / 2) * x) + ((cte/2) * y));
+			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, 0xff0000);
 
-			x_i_1 = x * cte - cte * (y + 1);
-			y_i_1 = e->map[y + 1][x + 1] + (((cte / 2) * x) + ((cte/2) * (y + 1)));
-			x_i_2 = (x + 1) * cte - cte * (y + 1);
-			y_i_2 = e->map[y + 1][x + 2] + (((cte / 2) * x) + ((cte/2) * (y + 1)));
-			draw_line_mlx(e, x_i_1 * scale_x + e->origin_x, y_i_1 * scale_y + e->origin_y, x_i_2 * scale_x + e->origin_x, y_i_2 * scale_y + e->origin_y, 0xff0000);
+			x_i_1 = ((x) * cte) - (cte * (y + 1));
+			y_i_1 = -(e->map[y + 1][x + 1]) + (((cte / 2) * x) + ((cte/2) * (y + 1)));
+			x_i_2 = ((x + 1) * cte) - (cte * (y + 1));
+			y_i_2 = -(e->map[y + 1][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * (y + 1)));
+			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, 0xff0000);
 
-			x_i_2 = (x + 1) * cte - cte * (y + 1);
-			y_i_2 = e->map[y + 1][x + 2] + (((cte / 2) * x) + ((cte/2) * (y + 1)));
-			x_i_2 = (x + 1) * cte - cte * y;
-			y_i_2 = e->map[y][x + 2] + (((cte / 2) * x + 1) + ((cte/2) * y));
-			draw_line_mlx(e, x_i_1 * scale_x + e->origin_x, y_i_1 * scale_y + e->origin_y, x_i_2 * scale_x + e->origin_x, y_i_2 * scale_y + e->origin_y, 0xff0000);
+			x_i_1 = ((x + 1) * cte) - (cte * (y + 1));
+			y_i_1 = -(e->map[y + 1][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * (y + 1)));
+			x_i_2 = ((x + 1) * cte) - (cte * y);
+			y_i_2 = -(e->map[y][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * y));
+			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, 0xff0000);
 
 			x++;
 		}
@@ -219,7 +219,8 @@ void 	drawParallele(t_env *e)
 	// width = e->map[y][0];
 	while (y < heigth - 1){
 		width = e->map[y][0];
-		while (x < width){
+		while (x < width)
+		{
 			x_i_1 = x + (cte * e->map[y][x + 1]);
 			y_i_1 = y + ((cte/2) * (e->map[y][x + 1]));
 			x_i_2 = (x + 1) + (cte * e->map[y][x + 2]);

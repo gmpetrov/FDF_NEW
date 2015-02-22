@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:53:44 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/21 19:32:51 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/22 16:51:22 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ t_env	*getEnv()
 	if (e == NULL){
 		e = (t_env *)malloc(sizeof(t_env));
 		e->mlx = mlx_init();
-		e->win = mlx_new_window(e->mlx, WIDTH, HEIGTH, "FDF");
-		e->img = mlx_new_image(e->mlx, WIDTH, HEIGTH);
+		e->win = mlx_new_window(e->mlx, 800, 600, "FDF");
+		e->img = mlx_new_image(e->mlx, 800, 600);
 		e->data = mlx_get_data_addr(e->img, &e->bpp, &e->size_line, &e->endian);
-		e->scale = 20;
+		e->scale = 10;
 		e->origin_x = 0;
 		e->origin_y = 0;
 		e->perspective = 1;
