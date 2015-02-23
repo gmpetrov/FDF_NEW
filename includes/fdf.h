@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/22 15:55:03 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/22 17:07:30 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	initPtrTab(t_env *e);
 t_env	*getEnv();
 int 	keyMap(int keycode);
 int 	img_pixel_put(t_env *e, int x, int y, int color);
-void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int color);
+void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2);
 
 void 	drawParallele(t_env *e);
 void 	drawIsometric(t_env *e);

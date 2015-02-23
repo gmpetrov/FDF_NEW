@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:53:44 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/22 16:51:22 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/22 18:21:12 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ t_env	*getEnv()
 		e->win = mlx_new_window(e->mlx, 800, 600, "FDF");
 		e->img = mlx_new_image(e->mlx, 800, 600);
 		e->data = mlx_get_data_addr(e->img, &e->bpp, &e->size_line, &e->endian);
-		e->scale = 10;
-		e->origin_x = 0;
-		e->origin_y = 0;
+		e->scale = 5;
+		e->origin_x = 250;
+		e->origin_y = 130;
 		e->perspective = 1;
-		e->cte = 2;
+		e->cte = 10;
 		initPtrTab(e);
 	}
 	return e;
