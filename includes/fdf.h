@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 09:44:41 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 11:46:36 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ typedef struct 		s_env
 	int 	origin_y;
 	int 	perspective;
 	double 	cte;
+	double 	x_i_1;
+	double 	y_i_1;
+	double 	x_i_2;
+	double 	y_i_2;
 	void (*tab[42])();
 }					t_env;
 
@@ -58,7 +62,6 @@ void	initPtrTab(t_env *e);
 t_env	*getEnv();
 int 	keyMap(int keycode);
 int 	img_pixel_put(t_env *e, int x, int y, int color);
-// void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2);
 void 	draw_line_mlx(t_env *e, t_point a, t_point b);
 
 void 	drawParallele(t_env *e);
