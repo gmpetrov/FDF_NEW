@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/22 18:28:23 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 10:46:34 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int		img_pixel_put(t_env *e, int x, int y, int color)
 		return -1;
 	new_color = mlx_get_color_value(e->mlx, color);
 	i = x * 4 + y * e->size_line;
-	// if (e->data[i] != 0 && e->data[i + 1] != 0 && e->data[i + 2] != 0)
-		// return -42;
 	e->data[i] = (new_color & 0xFF);
 	e->data[i + 1] = (new_color & 0xFF00) >> 8;
 	e->data[i + 2] = (new_color & 0xFF0000) >> 16;
@@ -83,28 +81,28 @@ void	swap_pos(int *x1, int *y1, int *x2, int *y2)
 	*x2 = tmp_x;	
 }
 
-void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2)
+void 	draw_line_mlx(t_env *e, t_point a, t_point b)
 {
 	int		x;
 	int		y;
 
-	(void)z1;
-	(void)z2;
-	int line_length = sqrt((x2-x1)*(x2-x1)-(y2-y1)*(y2-y1));
-	//int distance_length = abs(z2-z1);
+	(void)a.z;
+	(void)b.z;
+	int line_length = sqrt((b.x-a.x)*(b.x-a.x)-(b.y-a.y)*(b.y-a.y));
+	//int distance_length = abs(b.z-a.z);
 	double step;
 
 	int color_min;
 	int color_max;
 
-	if(z1==z2)
+	if(a.z==b.z)
 	{
-		if(z1==0)
+		if(a.z==0)
 		{
 			color_min = 0xff0000;
 			color_max = 0xff0000;
 		}
-		if(z1==10)
+		if(a.z==10)
 		{
 			color_min = 0xffffff;
 			color_max = 0xffffff;
@@ -112,33 +110,33 @@ void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2)
 	}
 	else
 	{
-		if(z1==0)
+		if(a.z==0)
 			color_min = 0xff0000;
-		if(z1==10)
+		if(a.z==10)
 			color_min = 0xffffff;
 
-		if(z2==0)
+		if(b.z==0)
 			color_max = 0xff0000;
-		if(z2==10)
+		if(b.z==10)
 			color_max = 0xffffff;
 	}
 
 	int color_current = color_min;
 
-	if (x1 == x2 && y1 == y2)
+	if (a.x == b.x && a.y == b.y)
 		return ;
-	else if (abs(x2 - x1) >= abs(y2 - y1))
+	else if (abs(b.x - a.x) >= abs(b.y - a.y))
 	{
-		if (x1 > x2)
-			swap_pos(&x1, &y1, &x2, &y2);
-		x = x1;
-		while (x <= x2)
+		if (a.x > b.x)
+			swap_pos(&a.x, &a.y, &b.x, &b.y);
+		x = a.x;
+		while (x <= b.x)
 		{
-			if(x2-x1 == 0)
+			if(b.x-a.x == 0)
 				return ;
-			y = y1 + ((y2 - y1) * (x - x1)) / (x2 - x1);
+			y = a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
 			
-			int distance_current = sqrt((x-x1)*(x-x1)-(y-y1)*(y-y1));
+			int distance_current = sqrt((x-a.x)*(x-a.x)-(y-a.y)*(y-a.y));
 			step = distance_current/(double)line_length;
 			
 			color_current = color_min*step+color_max*(1-step);
@@ -150,17 +148,17 @@ void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2)
 	}
 	else
 	{
-		if (y1 > y2)
-			swap_pos(&x1, &y1, &x2, &y2);
-		y = y1;
-		while (y <= y2)
+		if (a.y > b.y)
+			swap_pos(&a.x, &a.y, &b.x, &b.y);
+		y = a.y;
+		while (y <= b.y)
 		{
-			if(y2-y1 == 0)
+			if(b.y-a.y == 0)
 				return;
-			x = x1 + ((x2 - x1) * (y - y1)) / (y2 - y1);
+			x = a.x + ((b.x - a.x) * (y - a.y)) / (b.y - a.y);
 			// img_pixel_put(e, x, y, 0xff0000) == -42
 
-			int distance_current = sqrt((x-x1)*(x-x1)-(y-y1)*(y-y1));
+			int distance_current = sqrt((x-a.x)*(x-a.x)-(y-a.y)*(y-a.y));
 			step = distance_current/(double)line_length;
 			
 			color_current = color_min*step+color_max*(1-step);
@@ -201,6 +199,8 @@ void 	drawIsometric(t_env *e)
 	double 	x_i_2;
 	double 	y_i_2;
 	double 	cte;
+	t_point a;
+	t_point b;
 
 	x = 0;
 	y = 0;
@@ -217,33 +217,62 @@ void 	drawIsometric(t_env *e)
 			y_i_1 = -(e->map[y + 1][x + 1]) + (((cte / 2) * x) + ((cte/2) * (y + 1)));
 			x_i_2 = (x * cte) - (cte * y);
 			y_i_2 = -(e->map[y][x + 1]) + (((cte / 2) * x) + ((cte/2) * y));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y + 1][x + 1], e->map[y][x + 1]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y + 1][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y][x + 1];
+			draw_line_mlx(e, a, b);
 
 			x_i_1 = ((x) * cte) - (cte * (y + 1));
 			y_i_1 = -(e->map[y + 1][x + 1]) + (((cte / 2) * x) + ((cte/2) * (y + 1)));
 			x_i_2 = ((x + 1) * cte) - (cte * (y + 1));
 			y_i_2 = -(e->map[y + 1][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * (y + 1)));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y + 1][x + 1], e->map[y + 1][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y + 1][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y + 1][x + 2];
+			draw_line_mlx(e, a, b);
 
 			x_i_1 = ((x + 1) * cte) - (cte * y);
 			y_i_1 = -(e->map[y][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * y));
 			x_i_2 = ((x + 1) * cte) - (cte * (y + 1));
 			y_i_2 = -(e->map[y + 1][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * (y + 1)));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y + 1][x + 2], e->map[y][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y + 1][x + 2];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y][x + 2];
+			draw_line_mlx(e, a, b);
 
 			x_i_2 = ((x + 1) * cte) - (cte * y);
 			y_i_2 = -(e->map[y][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * y));
 			x_i_1 = ((x + 1) * cte) - (cte * (y + 1));
 			y_i_1 = -(e->map[y + 1][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * (y + 1)));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y + 1][x + 2], e->map[y][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y + 1][x + 2];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y][x + 2];
+
+			draw_line_mlx(e, a, b);
 
 			x_i_1 = x * cte - (cte * y);
 			y_i_1 = -(e->map[y][x + 1]) + (((cte / 2) * x) + ((cte/2) * y));
 			x_i_2 = (x + 1) * cte - cte * y;
 			y_i_2 = -(e->map[y][x + 2]) + (((cte / 2) * (x + 1)) + ((cte/2) * y));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y][x + 1], e->map[y][x + 2]);
-
-
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y][x + 2];
+			draw_line_mlx(e, a, b);
 			x++;
 		}
 		x = 0;
@@ -265,6 +294,8 @@ void 	drawParallele(t_env *e)
 	double 	x_i_2;
 	double 	y_i_2;
 	double 	cte;
+	t_point a;
+	t_point b;
 
 	x = 0;
 	y = 0;
@@ -281,26 +312,50 @@ void 	drawParallele(t_env *e)
 			y_i_1 = y + ((cte/2) * (e->map[y][x + 1]));
 			x_i_2 = (x + 1) + (cte * e->map[y][x + 2]);
 			y_i_2 = (y) + ((cte/2) * (e->map[y][x + 2]));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y][x + 1], e->map[y][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y][x + 2];
+			draw_line_mlx(e, a, b);
 
 			x_i_1 = x + (cte * e->map[y][x + 1]);
 			y_i_1 = y + ((cte/2) * (e->map[y][x + 1]));
 			x_i_2 = (x) + (cte * e->map[y + 1][x + 1]);
 			y_i_2 = (y + 1) + ((cte/2) * (e->map[y + 1][x + 1]));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y][x + 1], e->map[y + 1][x + 1]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y + 1][x + 1];
+			draw_line_mlx(e, a, b);
 
 			x_i_1 = x + (cte * e->map[y + 1][x + 1]);
 			y_i_1 = y + 1 + ((cte/2) * (e->map[y + 1][x + 1]));
 			x_i_2 = (x + 1) + (cte * e->map[y + 1][x + 2]);
 			y_i_2 = (y + 1) + ((cte/2) * (e->map[y + 1][x + 2]));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y + 1][x + 1], e->map[y + 1][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y + 1][x + 1];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y + 1][x + 2];
+			draw_line_mlx(e, a, b);
 
 
 			x_i_1 = (x + 1) + (cte * e->map[y][x + 2]);
 			y_i_1 = (y) + ((cte/2) * (e->map[y][x + 2]));
 			x_i_2 = (x + 1) + (cte * e->map[y + 1][x + 2]);
 			y_i_2 = (y + 1) + ((cte/2) * (e->map[y + 1][x + 2]));
-			draw_line_mlx(e, (x_i_1 * scale_x) + e->origin_x, (y_i_1 * scale_y) + e->origin_y, (x_i_2 * scale_x) + e->origin_x, (y_i_2 * scale_y) + e->origin_y, e->map[y][x + 2], e->map[y + 1][x + 2]);
+			a.x = (x_i_1 * scale_x) + e->origin_x;
+			a.y = (y_i_1 * scale_y) + e->origin_y;
+			a.z = e->map[y][x + 2];
+			b.x = (x_i_2 * scale_x) + e->origin_x;
+			b.y = (y_i_2 * scale_y) + e->origin_y;
+			b.z = e->map[y + 1][x + 2];
+			draw_line_mlx(e, a, b);
 			x++;
 		}
 		x = 0;
@@ -329,101 +384,11 @@ void 	clearImg(t_env *e)
 
 int 	expose_hook(t_env *e)
 {
-	// drawGradient(e);
 	clearImg(e);
-	// drawParallele(e);
 	if (e->perspective == 1)
 		drawIsometric(e);
 	else
 		drawParallele(e);
 	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
 	return (0);
-}
-
-// int 	loop_hook(t_env *e)
-// {
-// 	expose_hook(e);
-// 	return (0);
-// }
-
-void 	key_arrow_up(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_y -= 10;
-	expose_hook(e);
-	ft_putstr("UP\n");
-}
-
-void 	key_arrow_down(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_y += 10;
-	expose_hook(e);
-	ft_putstr("DOWN\n");
-}
-
-void 	key_arrow_right(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_x += 10;
-	expose_hook(e);
-	ft_putstr("RIGHT\n");	
-}
-
-void 	key_arrow_left(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_x -= 10;
-	expose_hook(e);
-	ft_putstr("LEFT\n");	
-}
-
-void 	key_p(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->scale += 1;
-	expose_hook(e);
-	ft_putstr("P\n");	
-}
-
-void 	key_m(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	if (e->scale == 0)
-		return ;
-	e->scale -= 1;
-	expose_hook(e);
-	ft_putstr("P\n");	
-}
-
-void 	key_1(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->perspective = 1;
-	expose_hook(e);
-	ft_putstr("P\n");	
-}
-
-void 	key_2(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->perspective = 2;
-	expose_hook(e);
-	ft_putstr("P\n");	
 }

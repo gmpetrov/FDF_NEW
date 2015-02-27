@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/22 17:07:30 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 09:44:41 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@
 # include <fcntl.h>
 
 /* STRUCTURES */
+
+typedef struct 		s_point
+{
+	int 			x;
+	int 			y;
+	int 			z;
+}					t_point;
 
 typedef struct 		s_env
 {
@@ -46,12 +53,13 @@ typedef struct 		s_env
 
 int 	expose_hook(t_env *e);
 int 	key_hook(int keycode, t_env *e);
-// int 	loop_hook(t_env *e);
+void 	clearImg(t_env *e);
 void	initPtrTab(t_env *e);
 t_env	*getEnv();
 int 	keyMap(int keycode);
 int 	img_pixel_put(t_env *e, int x, int y, int color);
-void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2);
+// void 	draw_line_mlx(t_env *e, int x1, int y1, int x2, int y2, int z1 ,int z2);
+void 	draw_line_mlx(t_env *e, t_point a, t_point b);
 
 void 	drawParallele(t_env *e);
 void 	drawIsometric(t_env *e);
