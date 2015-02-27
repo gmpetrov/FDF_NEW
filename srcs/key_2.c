@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 09:15:42 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 09:15:51 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 12:31:11 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void 	key_arrow_right(void)
 	e = getEnv();
 	e->origin_x += 10;
 	expose_hook(e);
-	ft_putstr("RIGHT\n");	
+	ft_putstr("RIGHT\n");
 }
 
 void 	key_arrow_left(void)
@@ -49,5 +49,5 @@ void 	key_arrow_left(void)
 	e = getEnv();
 	e->origin_x -= 10;
 	expose_hook(e);
-	ft_putstr("LEFT\n");	
+	ft_putstr("LEFT\n");
 }

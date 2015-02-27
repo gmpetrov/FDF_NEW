@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 12:07:31 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 12:30:01 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,30 @@ int 	key_hook(int keycode, t_env *e)
 
 void 	drawGradient(t_env *e)
 {
-	int x = 0;
-	int y = 0;
-	int color = 0xFF0000;
-	int r = 0xFF;
-	int g = 0x00;
-	int b = 0x42;
-	while (y < HEIGTH){
-		while (x < WIDTH){
-			img_pixel_put(e, x, y, color);
-			x++;
+	int 		x;
+	int 		y;
+	t_color 	c;
+
+	c.r = 0xFF;
+	c.g = 0x00;
+	c.b = 0x42;
+	x = -1;
+	y = -1;
+	while (++y < HEIGTH)
+	{
+		while (++x < WIDTH)
+			img_pixel_put(e, x, y, e->color);
+		if (y % 2 == 0)
+		{
+			if (c.r < 0xFF)
+				c.r++;
+			if (c.g < 0xFF)
+				c.g++;
+			if (c.b < 0xFF)
+				c.b++;
 		}
-		if (y % 2 == 0){
-			if (r < 0xFF)
-				r++;
-			if (g < 0xFF)
-				g++;
-			if (b < 0xFF)
-				b++;
-		}
-		color = (b) + (g << 8) + (r << 16);
+		e->color = (c.b) + (c.g << 8) + (c.r << 16);
 		x = 0;
-		y++;
 	}
 }
 

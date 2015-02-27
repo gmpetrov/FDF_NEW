@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 11:37:50 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 12:08:19 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 12:25:45 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void 	draw_line_mlx(t_env *e, t_point a, t_point b)
 	else if (dx > 0 && dy > 0)
 		case2(e, a, b);
 	else if (dx < 0 && dy < 0)
-		case2(e, b,a);
+		case2(e, b, a);
 	else if (dx < 0 && dy >= 0)
 		case1(e, b, a);
 	else if (dx == 0 && dy != 0)
@@ -47,7 +47,7 @@ void 	case1(t_env *e, t_point a, t_point b)
 	dy = b.y - a.y;
 	while (x < b.x)
 	{
-		y = ((dy/(double)dx) * (x - a.x)) + a.y;
+		y = ((dy / (double)dx) * (x - a.x)) + a.y;
 		img_pixel_put(e, x, y, 0xeeeeee);
 
 		x++;
@@ -66,10 +66,10 @@ void 	case2(t_env *e, t_point a, t_point b)
 	dy = b.y - a.y;
 	while (x < b.x)
 	{
-		y = ((dy/(double)dx) * (x - a.x)) + a.y;
+		y = ((dy / (double)dx) * (x - a.x)) + a.y;
 		img_pixel_put(e, x, y, 0xeeeeee);
 		x++;
-	}	
+	}
 }
 
 void 	case3(t_env *e, t_point a, t_point b)

@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 10:28:21 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 11:46:36 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 12:29:05 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ typedef struct 		s_point
 	int 			z;
 }					t_point;
 
+typedef struct 		s_color
+{
+	int 			r;
+	int 			g;
+	int 			b;
+}					t_color;
+
 typedef struct 		s_env
 {
 	void	*mlx;
@@ -50,6 +57,7 @@ typedef struct 		s_env
 	double 	y_i_1;
 	double 	x_i_2;
 	double 	y_i_2;
+	int 	color;
 	void (*tab[42])();
 }					t_env;
 

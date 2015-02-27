@@ -6,7 +6,7 @@
 /*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 12:53:44 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/22 18:21:12 by gmp              ###   ########.fr       */
+/*   Updated: 2015/02/27 12:30:07 by gmp              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int 	keyMap(int keycode){
 t_env	*getEnv()
 {
 	static t_env	*e = NULL;
-	if (e == NULL){
+	if (e == NULL)
+	{
 		e = (t_env *)malloc(sizeof(t_env));
 		e->mlx = mlx_init();
 		e->win = mlx_new_window(e->mlx, 800, 600, "FDF");
@@ -61,6 +62,7 @@ t_env	*getEnv()
 		e->origin_y = 130;
 		e->perspective = 1;
 		e->cte = 10;
+		e->color = 0xFF0000;
 		initPtrTab(e);
 	}
 	return e;
