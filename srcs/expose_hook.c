@@ -1,45 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   expose_hook.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 12:05:19 by gmp               #+#    #+#             */
-/*   Updated: 2015/03/04 16:37:31 by gpetrov          ###   ########.fr       */
+/*   Created: 2015/02/20 12:47:30 by gmp               #+#    #+#             */
+/*   Updated: 2015/03/04 16:36:58 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	swap_pos(int *x1, int *y1, int *x2, int *y2)
+int		expose_hook(t_env *e)
 {
-	int tmp_x;
-	int tmp_y;
-
-	tmp_x = *x2;
-	tmp_y = *y2;
-	*x1 = *x2;
-	*y1 = *y2;
-	*y2 = tmp_y;
-	*x2 = tmp_x;
-}
-
-void	clear_img(t_env *e)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	y = 0;
-	while (y < HEIGTH)
-	{
-		while (x < WIDTH)
-		{
-			img_pixel_put(e, x, y, 0x000000);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
+	clear_img(e);
+	if (e->perspective == 1)
+		draw_isometric(e);
+	else
+		draw_parallele(e);
+	mlx_put_image_to_window(e->mlx, e->win, e->img, 0, 0);
+	return (0);
 }

@@ -3,43 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_parallele.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 11:57:28 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 12:27:48 by gmp              ###   ########.fr       */
+/*   Updated: 2015/03/04 13:45:31 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void 	parallele_line_1(t_env *e, int x, int y);
-void 	parallele_line_2(t_env *e, int x, int y);
-void 	parallele_line_3(t_env *e, int x, int y);
-void 	parallele_line_4(t_env *e, int x, int y);
-
-void 	drawParallele(t_env *e)
-{
-	int 	y;
-	int 	x;
-
-	x = 0;
-	y = 0;
-	while (y < e->map_heigth - 1)
-	{
-		while (x < e->map[y][0] - 1)
-		{
-			parallele_line_1(e, x, y);
-			parallele_line_2(e, x, y);
-			parallele_line_3(e, x, y);
-			parallele_line_4(e, x, y);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-}
-
-void 	parallele_line_1(t_env *e, int x, int y)
+static	void	parallele_line_1(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -57,7 +30,7 @@ void 	parallele_line_1(t_env *e, int x, int y)
 	draw_line_mlx(e, a, b);
 }
 
-void 	parallele_line_2(t_env *e, int x, int y)
+static	void	parallele_line_2(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -75,7 +48,7 @@ void 	parallele_line_2(t_env *e, int x, int y)
 	draw_line_mlx(e, a, b);
 }
 
-void 	parallele_line_3(t_env *e, int x, int y)
+static	void	parallele_line_3(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -93,7 +66,7 @@ void 	parallele_line_3(t_env *e, int x, int y)
 	draw_line_mlx(e, a, b);
 }
 
-void 	parallele_line_4(t_env *e, int x, int y)
+static	void	parallele_line_4(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -109,4 +82,26 @@ void 	parallele_line_4(t_env *e, int x, int y)
 	b.y = (e->y_i_2 * e->scale) + e->origin_y;
 	b.z = e->map[y + 1][x + 2];
 	draw_line_mlx(e, a, b);
+}
+
+void			draw_parallele(t_env *e)
+{
+	int		y;
+	int		x;
+
+	x = 0;
+	y = 0;
+	while (y < e->map_heigth - 1)
+	{
+		while (x < e->map[y][0] - 1)
+		{
+			parallele_line_1(e, x, y);
+			parallele_line_2(e, x, y);
+			parallele_line_3(e, x, y);
+			parallele_line_4(e, x, y);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
 }

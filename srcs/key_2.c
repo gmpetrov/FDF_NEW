@@ -3,51 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   key_2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 09:15:42 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 12:31:11 by gmp              ###   ########.fr       */
+/*   Created: 2015/03/04 16:04:03 by gpetrov           #+#    #+#             */
+/*   Updated: 2015/03/04 16:06:53 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void 	key_arrow_up(void)
+void	key_2(void)
 {
 	t_env	*e;
 
-	e = getEnv();
-	e->origin_y -= 10;
+	e = get_env();
+	e->perspective = 2;
 	expose_hook(e);
-	ft_putstr("UP\n");
-}
-
-void 	key_arrow_down(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_y += 10;
-	expose_hook(e);
-	ft_putstr("DOWN\n");
-}
-
-void 	key_arrow_right(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_x += 10;
-	expose_hook(e);
-	ft_putstr("RIGHT\n");
-}
-
-void 	key_arrow_left(void)
-{
-	t_env	*e;
-
-	e = getEnv();
-	e->origin_x -= 10;
-	expose_hook(e);
-	ft_putstr("LEFT\n");
+	ft_putstr("P\n");
 }

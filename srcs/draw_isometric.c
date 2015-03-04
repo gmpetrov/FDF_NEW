@@ -3,42 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_isometric.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/27 11:42:20 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/27 12:25:05 by gmp              ###   ########.fr       */
+/*   Updated: 2015/03/04 13:38:00 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void 	iso_line_1(t_env *e, int x, int y);
-void 	iso_line_2(t_env *e, int x, int y);
-void 	iso_line_3(t_env *e, int x, int y);
-void 	iso_line_4(t_env *e, int x, int y);
-
-void 	drawIsometric(t_env *e)
-{	int 	y;
-	int 	x;
-
-	x = 0;
-	y = 0;
-	while (y < e->map_heigth - 1)
-	{
-		while (x < e->map[y][0] - 1)
-		{
-			iso_line_1(e, x, y);
-			iso_line_2(e, x, y);
-			iso_line_3(e, x, y);
-			iso_line_4(e, x, y);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-}
-
-void 	iso_line_1(t_env *e, int x, int y)
+static void		iso_line_1(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -57,7 +31,7 @@ void 	iso_line_1(t_env *e, int x, int y)
 	draw_line_mlx(e, a, b);
 }
 
-void 	iso_line_2(t_env *e, int x, int y)
+static void		iso_line_2(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -76,7 +50,8 @@ void 	iso_line_2(t_env *e, int x, int y)
 	b.z = e->map[y + 1][x + 2];
 	draw_line_mlx(e, a, b);
 }
-void 	iso_line_3(t_env *e, int x, int y)
+
+static void		iso_line_3(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -95,7 +70,8 @@ void 	iso_line_3(t_env *e, int x, int y)
 	b.z = e->map[y][x + 2];
 	draw_line_mlx(e, a, b);
 }
-void 	iso_line_4(t_env *e, int x, int y)
+
+static void		iso_line_4(t_env *e, int x, int y)
 {
 	t_point a;
 	t_point b;
@@ -112,4 +88,26 @@ void 	iso_line_4(t_env *e, int x, int y)
 	b.y = (e->y_i_2 * e->scale) + e->origin_y;
 	b.z = e->map[y][x + 2];
 	draw_line_mlx(e, a, b);
+}
+
+void			draw_isometric(t_env *e)
+{
+	int		y;
+	int		x;
+
+	x = 0;
+	y = 0;
+	while (y < e->map_heigth - 1)
+	{
+		while (x < e->map[y][0] - 1)
+		{
+			iso_line_1(e, x, y);
+			iso_line_2(e, x, y);
+			iso_line_3(e, x, y);
+			iso_line_4(e, x, y);
+			x++;
+		}
+		x = 0;
+		y++;
+	}
 }

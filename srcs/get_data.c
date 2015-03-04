@@ -3,45 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_data.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gmp <gmp@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/20 20:15:16 by gmp               #+#    #+#             */
-/*   Updated: 2015/02/21 12:25:58 by gmp              ###   ########.fr       */
+/*   Updated: 2015/03/04 19:04:31 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int		**ft_get_data(int argc, char **argv)
-{
-	int		fd;
-	char	*line;
-	int		i;
-	int		**tab;
-
-	i = 0;
-	if (argc != 2)
-	{
-		ft_putstr("usage: ./fdf [data_file]\n");
-		exit(0);
-	}
-	i = ft_data_size(argv[1]);
-	tab = (int**)malloc((i + 1)* (sizeof(*tab)));
-	tab[i + 1] = NULL;
-	i = 0;
-	fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
-	{
-		tab[i] = ft_put_data(line);
-		i++;
-		ft_putstr(line);
-		ft_putchar('\n');
-		free(line);
-	}
-	return (tab);
-}
-
-int		ft_tablen(char **tab)
+static	int		ft_tablen(char **tab)
 {
 	int		i;
 
@@ -51,16 +22,17 @@ int		ft_tablen(char **tab)
 	return (i);
 }
 
-int		ft_data_size(char *file)
+static	int		ft_data_size(char *file)
 {
 	int		fd;
 	int		i;
 	char	*line;
-	t_env 	*e;
+	t_env	*e;
 
-	e = getEnv();
+	e = get_env();
 	i = 0;
-	fd = open(file, O_RDONLY);
+	if ((fd = open(file, O_RDONLY)) < 0)
+		ft_usage();
 	while (get_next_line(fd, &line) != 0)
 	{
 		free(line);
@@ -71,7 +43,7 @@ int		ft_data_size(char *file)
 	return (i);
 }
 
-int		*ft_put_data(char *str)
+static	int		*ft_put_data(char *str)
 {
 	char	**chartab;
 	int		*tab;
@@ -85,5 +57,29 @@ int		*ft_put_data(char *str)
 	j = 0;
 	while (++j <= i)
 		tab[j] = ft_atoi(chartab[j - 1]);
+	return (tab);
+}
+
+int				**ft_get_data(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+	int		i;
+	int		**tab;
+
+	if (argc != 2 || (fd = open(argv[1], O_RDONLY)) < 0 \
+		|| (i = ft_data_size(argv[1])) == 0)
+		ft_usage();
+	tab = (int**)malloc((i + 1) * (sizeof(*tab)));
+	tab[i + 1] = NULL;
+	i = 0;
+	while (get_next_line(fd, &line) > 0)
+	{
+		if (is_str_nb_only(line) == -1)
+			ft_usage();
+		tab[i] = ft_put_data(line);
+		i++;
+		free(line);
+	}
 	return (tab);
 }

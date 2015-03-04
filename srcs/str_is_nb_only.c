@@ -1,45 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   str_is_nb_only.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 12:05:19 by gmp               #+#    #+#             */
-/*   Updated: 2015/03/04 16:37:31 by gpetrov          ###   ########.fr       */
+/*   Created: 2015/03/04 17:38:09 by gpetrov           #+#    #+#             */
+/*   Updated: 2015/03/04 19:06:23 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	swap_pos(int *x1, int *y1, int *x2, int *y2)
+int		is_str_nb_only(char *str)
 {
-	int tmp_x;
-	int tmp_y;
+	int		i;
 
-	tmp_x = *x2;
-	tmp_y = *y2;
-	*x1 = *x2;
-	*y1 = *y2;
-	*y2 = tmp_y;
-	*x2 = tmp_x;
-}
-
-void	clear_img(t_env *e)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	y = 0;
-	while (y < HEIGTH)
+	i = 0;
+	if (ft_strlen(str) == 0)
+		return (-1);
+	while (i < ft_strlen(str))
 	{
-		while (x < WIDTH)
-		{
-			img_pixel_put(e, x, y, 0x000000);
-			x++;
-		}
-		x = 0;
-		y++;
+		if (!ft_isdigit(str[i]) && str[i] != '\n' && str[i] != '\t' \
+			&& str[i] != ' ')
+			return (-1);
+		i++;
 	}
+	return (0);
 }

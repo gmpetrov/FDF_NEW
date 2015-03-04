@@ -1,45 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   draw_gradient.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpetrov <gpetrov@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/27 12:05:19 by gmp               #+#    #+#             */
-/*   Updated: 2015/03/04 16:37:31 by gpetrov          ###   ########.fr       */
+/*   Created: 2015/03/04 13:55:25 by gpetrov           #+#    #+#             */
+/*   Updated: 2015/03/04 16:48:46 by gpetrov          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	swap_pos(int *x1, int *y1, int *x2, int *y2)
+void	draw_gradient(t_env *e)
 {
-	int tmp_x;
-	int tmp_y;
+	int			x;
+	int			y;
+	t_color		c;
 
-	tmp_x = *x2;
-	tmp_y = *y2;
-	*x1 = *x2;
-	*y1 = *y2;
-	*y2 = tmp_y;
-	*x2 = tmp_x;
-}
-
-void	clear_img(t_env *e)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	y = 0;
-	while (y < HEIGTH)
+	c.r = 0xFF;
+	c.g = 0x00;
+	c.b = 0x42;
+	x = -1;
+	y = -1;
+	while (++y < HEIGTH)
 	{
-		while (x < WIDTH)
+		while (++x < WIDTH)
+			img_pixel_put(e, x, y, e->color);
+		if (y % 2 == 0)
 		{
-			img_pixel_put(e, x, y, 0x000000);
-			x++;
+			if (c.r < 0xFF)
+				c.r++;
+			if (c.g < 0xFF)
+				c.g++;
+			if (c.b < 0xFF)
+				c.b++;
 		}
+		e->color = (c.b) + (c.g << 8) + (c.r << 16);
 		x = 0;
-		y++;
 	}
 }
